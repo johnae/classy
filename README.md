@@ -21,7 +21,7 @@ Because MoonScript's built-in class implementation makes it difficult to use met
 
 ## Usage
 
-See spec/classy_spec.moon for more examples.
+See spec/classy_spec.moon and spec/smoke_test_spec.moon for more examples.
 
 ```moonscript
 define = require "classy"
@@ -55,6 +55,18 @@ Date = define 'Date', ->
       y, m, d = @year, format('%02d', @month), format('%02d', @day)
       "#{y}-#{m}-#{d}"
 
+    __add: (num_days) =>
+      s = num_days*24*60*60
+      d = os.time year: @year, month: @month, day: @day
+      newdate = os.date '*t', d+s
+      @.new newdate.year, newdate.month, newdate.day
+
+    __sub: (num_days) =>
+      s = num_days*24*60*60
+      d = os.time year: @year, month: @month, day: @day
+      newdate = os.date '*t', d-s
+      @.new newdate.year, newdate.month, newdate.day
+
 Person = define 'Person', ->
   accessors
     attributes: {'firstname', 'lastname'}
@@ -84,8 +96,26 @@ Person = define 'Person', ->
     initialize: (firstname, lastname, birthdate) =>
       @attributes = {:firstname, :lastname, birthdate: Date\from_string(birthdate)}
 
+-- subclass of Person
+Employee = define 'Employee', ->
+  parent Person
+  static
+    from_person: (p, salary) =>
+      {:firstname, :lastname, :birthdate} = p.attributes
+      birthdate = tostring(birthdate)
+      @.new :firstname, :lastname, :birthdate, :salary
+  instance
+    initialize: (opts={}) =>
+      {:firstname, :lastname, :birthdate} = opts
+      @super.initialize @, firstname, lastname, birthdate
+      @salary = opts.salary
 
-p = Person.new 'John', 'Eriksson', '1978-08-19'
+d = Date.new 1978, 1, 5
+print tostring(d) -- prints '1978-01-05'
+new_year_1977 = d - 5
+print tostring(new_year_1977) -- prints '1977-12-31'
+
+p = Person.new 'John', 'Eriksson', '1978-01-05'
 print p.firstname -- prints the firstname in the @attributes table
 print p.age -- prints the calculated age
 print p.birthdate -- print the birthdate
@@ -95,8 +125,13 @@ print p.birthdate -- prints the new birthdate
 print p.name -- prints the name by concatenating firstname and lastname
 
 bob = Person\find('john')[1] -- static method, finds Bob (his lastname is Johnsson)
-print bob.name -- prints Bob Johnsson"
+print bob.name -- prints "Bob Johnsson"
 print bob.age -- prints the calculated age
+
+employee = Employee\from_person bob, 1000000
+print employee.name -- prints "Bob Johnsson"
+print employee.age -- prints calculated age
+print employee.salary -- prints 1000000
 ```
 
 ## Development

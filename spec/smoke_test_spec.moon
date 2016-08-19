@@ -70,6 +70,23 @@ Person = define 'Person', ->
     initialize: (firstname, lastname, birthdate) =>
       @attributes = {:firstname, :lastname, birthdate: Date\from_string(birthdate)}
 
+  meta
+    __tostring: =>
+      @name
+
+Employee = define 'Employee', ->
+  parent Person
+  static
+    from_person: (p, salary) =>
+      {:firstname, :lastname, :birthdate} = p.attributes
+      birthdate = tostring(birthdate)
+      @.new :firstname, :lastname, :birthdate, :salary
+  instance
+    initialize: (opts={}) =>
+      {:firstname, :lastname, :birthdate} = opts
+      @super.initialize @, firstname, lastname, birthdate
+      @salary = opts.salary
+
 describe 'Smoke test', ->
 
   describe 'Date', ->
@@ -154,3 +171,45 @@ describe 'Smoke test', ->
     it 'has a class method find', ->
       bob = Person\find('John')[1]
       assert.equal 'Bob Johnsson', bob.name
+
+    it 'has a tostring meta method', ->
+      assert.equal 'John Eriksson', tostring(person)
+
+  describe 'an Employee', ->
+    local employee, expected_age
+
+    before_each ->
+      -- making a lot of money it seems :-)
+      employee = Employee.new
+        firstname: 'John'
+        lastname: 'Eriksson'
+        birthdate: '1978-01-05'
+        salary: 1000000000
+
+      d = employee.attributes.birthdate
+      today = os.date('*t')
+      expected_age = today.year - d.year
+      if today.month < d.month
+        expected_age -= 1
+      else if today.month == d.month
+        if today.day < d.day
+          expected_age -= 1
+
+    it 'is a Person and an Employee', ->
+      assert.true employee.is_a[Employee]
+      assert.true employee.is_a[Person]
+      assert.equal 1000000000, employee.salary
+
+    it 'inherits name from Person', ->
+      assert.equal 'John Eriksson', employee.name
+
+    it 'inherits age from Person', ->
+      assert.equal expected_age, employee.age
+
+    it 'inherits the tostring meta method from Person', ->
+      assert.equal 'John Eriksson', tostring(employee)
+
+    it 'can be created from a person object', ->
+      p = Person.new 'John', 'Eriksson', '1978-01-05'
+      e = Employee\from_person p, 1000000
+      assert.equal 'John Eriksson', e.name
