@@ -29,6 +29,18 @@ Date = define 'Date', ->
       y, m, d = @year, format('%02d', @month), format('%02d', @day)
       "#{y}-#{m}-#{d}"
 
+    __add: (num_days) =>
+      s = num_days*24*60*60
+      d = os.time year: @year, month: @month, day: @day
+      newdate = os.date '*t', d+s
+      @.new newdate.year, newdate.month, newdate.day
+
+    __sub: (num_days) =>
+      s = num_days*24*60*60
+      d = os.time year: @year, month: @month, day: @day
+      newdate = os.date '*t', d-s
+      @.new newdate.year, newdate.month, newdate.day
+
 Person = define 'Person', ->
   accessors
     attributes: {'firstname', 'lastname'}
@@ -87,6 +99,20 @@ describe 'Smoke test', ->
     it 'has a meta method tostring', ->
       d = Date.new 2000, 01, 01
       assert.equal '2000-01-01', tostring(d)
+
+    it 'has a meta method add which adds days', ->
+      d = Date.new 2000, 01, 01
+      d = d + 10
+      assert.equal '2000-01-11', tostring(d)
+      d = d + 21
+      assert.equal '2000-02-01', tostring(d)
+
+    it 'has a meta method sub which subtracts days', ->
+      d = Date.new 2000, 01, 01
+      d = d - 10
+      assert.equal '1999-12-22', tostring(d)
+      d = d - 22
+      assert.equal '1999-11-30', tostring(d)
 
     it 'can be created from a string', ->
       d = Date\from_string '2000-01-01'
