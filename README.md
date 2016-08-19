@@ -5,8 +5,7 @@
 https://github.com/johnae/classy
 
 ## Description
-
-Classy is a class implementation for MoonScript/Lua. It is mainly for MoonScript however since that allows a certain syntax which looks pretty good i.m.o. I haven't used it from Lua but I expect the syntax to become more verbose and definitely uglier.
+Classy is a class implementation for [MoonScript](https://github.com/leafo/moonscript) (and [Lua](http://www.lua.org)). It is mainly for MoonScript however since that allows a certain syntax which looks pretty good i.m.o. I haven't used it from Lua but I expect the syntax to become more verbose and definitely uglier.
 
 ## Lua compatibility
 
