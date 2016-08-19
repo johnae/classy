@@ -76,7 +76,7 @@ copy_value = (copies) =>
   class_initializer new_class
 
   is_a[new_class] = true
-  new_class.__name = name
+  new_class.__type = name
   __instance.dup = copy_value
   -- inherit parent if defined
   if parent_class

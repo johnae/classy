@@ -139,7 +139,7 @@ return function(name, class_initializer)
   setfenv(class_initializer, class_initializer_env)
   class_initializer(new_class)
   is_a[new_class] = true
-  new_class.__name = name
+  new_class.__type = name
   __instance.dup = copy_value
   if parent_class then
     __instance.super = parent_class.__instance
