@@ -17,7 +17,7 @@ I haven't done any extensive performance tests but it seems to be slightly faste
 
 ## Why
 
-Because MoonScript's built-in class implementation makes it difficult to use metamethods. It's also a bit verbose in it's compiled lua output. Also because it's fun.
+Because MoonScript's built-in class implementation makes it difficult to use metamethods. It's also a bit verbose in it's compiled lua output. And, of course, because it's fun.
 
 ## Usage
 
