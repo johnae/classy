@@ -132,6 +132,18 @@ employee = Employee\from_person bob, 1000000
 print employee.name -- prints "Bob Johnsson"
 print employee.age -- prints calculated age
 print employee.salary -- prints 1000000
+
+-- some_table == some_table is true in lua, some_table == some_other_table is false in lua
+print employee == employee -- prints true
+
+cloned_employee = employee\dup!
+print cloned_employee.name -- prints "Bob Johnsson"
+print cloned_employee.age -- prints calculated age
+print cloned_employee.salary -- prints 1000000
+print cloned_employee == employee -- prints false
+cloned_employee.salary = 100
+print cloned_employee.salary -- prints 100
+print employee.salary -- prints 1000000
 ```
 
 Above demonstrates some of what this library can do. There is more, like missing_property for example. See [spec/classy_spec.moon](spec/classy_spec.moon).
