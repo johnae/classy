@@ -171,6 +171,9 @@ return function(name, class_initializer)
     if k == 'is_a' then
       return is_a
     end
+    if k == '__type' then
+      return name
+    end
     do
       local v = rawget(__instance, k)
       if v then

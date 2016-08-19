@@ -96,6 +96,8 @@ copy_value = (copies) =>
     -- delegate missing keys in instance
     if k == 'is_a'
       return is_a
+    if k == '__type'
+      return name
     if v = rawget __instance, k
       return v
     -- next try properties

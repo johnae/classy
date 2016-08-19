@@ -5,6 +5,8 @@ describe "defining a class", ->
   it 'defines a new class', ->
     c = define 'AClass', =>
     assert.equal 'AClass', c.__type
+    new = c.new!
+    assert.equal 'AClass', new.__type
 
   describe 'instance methods', ->
 
