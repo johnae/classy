@@ -21,7 +21,7 @@ Because MoonScript's built-in class implementation makes it difficult to use met
 
 ## Usage
 
-See spec/classy_spec.moon and spec/smoke_test_spec.moon for more examples.
+See [spec/classy_spec.moon](spec/classy_spec.moon) and [spec/smoke_test_spec.moon](spec/smoke_test_spec.moon) for more examples.
 
 ```moonscript
 define = require "classy"
@@ -133,6 +133,8 @@ print employee.name -- prints "Bob Johnsson"
 print employee.age -- prints calculated age
 print employee.salary -- prints 1000000
 ```
+
+Above demonstrates some of what this library can do. There is more, like missing_property for example. See [spec/classy_spec.moon](spec/classy_spec.moon).
 
 ## Development
 
