@@ -6,6 +6,32 @@ describe "defining a class", ->
     c = define 'AClass', =>
     assert.equal 'AClass', c.__name
 
+  describe 'instance methods', ->
+
+    it 'are available on instances', ->
+      c = define 'AClass', ->
+        instance
+          some_method: =>
+            "some method"
+
+      new = c.new!
+      assert.nil c.some_method
+      assert.not_nil new.some_method
+      assert.equal "some method",  new\some_method!
+
+  describe 'static methods', ->
+
+    it 'are available on the class', ->
+      c = define 'AClass', ->
+        static
+          some_method: =>
+            "some method"
+
+      new = c.new!
+      assert.nil new.some_method
+      assert.not_nil c.some_method
+      assert.equal "some method",  c\some_method!
+
   describe 'initialization', ->
 
     it 'allows a custom initializer', ->
@@ -47,20 +73,6 @@ describe "defining a class", ->
       assert.same new, new2
       new.var = 20
       assert.not_equal new.var, new2.var
-
-  describe 'methods', ->
-
-    -- should they be?
-    it 'methods are available on instances', ->
-      c = define 'AClass', ->
-        instance
-          some_method: =>
-            "some method"
-
-      new = c.new!
-      assert.nil c.some_method
-      assert.not_nil new.some_method
-      assert.equal "some method",  new\some_method!
 
   describe 'inheritance', ->
 
