@@ -20,7 +20,7 @@ copy_value = (copies) =>
   __properties = {}
   is_a = {}
   __meta = {}
-  new_class = {:__properties, :is_a, :__instance, :__meta}
+  new_class = :__properties, :is_a, :__instance, :__meta
 
   static = (opts) ->
     for name, def in pairs opts
@@ -31,16 +31,16 @@ copy_value = (copies) =>
       __instance[name] = def
 
   parent = (parent) -> parent_class = parent
-  missing_prop = {
+
+  missing_prop =
     get: (k) => rawget @, k
     set: (k, v) => rawset @, k, v
-  }
   missing_property = (def) -> missing_prop = merge missing_prop, def
 
   properties = (opts={}) ->
     for k, v in pairs opts
       if type(v) == 'function'
-        v = {get: v}
+        v = get: v
       if old_prop = __properties[k]
         v = merge(old_prop, v)
       __properties[k] = v
@@ -48,10 +48,9 @@ copy_value = (copies) =>
   accessors = (opts={}) ->
     for field, keys in pairs opts
       for key in *keys
-        __properties[key] = {
+        __properties[key] =
           get: => @[field][key]
           set: (v) => @[field][key] = v
-        }
 
   include = (tbl) ->
     for k, v in pairs tbl
@@ -124,7 +123,7 @@ copy_value = (copies) =>
 
   new = (...) ->
     -- allows calling new from instance context
-    new_instance = setmetatable {:new}, __meta
+    new_instance = setmetatable :new, __meta
     new_instance.initialize new_instance, ...
     new_instance
   new_class.new = new
