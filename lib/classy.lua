@@ -201,6 +201,9 @@ return function(name, class_initializer)
         return prop
       end
     end
+    if self.__nils[k] then
+      return nil
+    end
     if missing_prop.get then
       return missing_prop.get(self, k)
     end
@@ -218,6 +221,10 @@ return function(name, class_initializer)
         return 
       end
     end
+    if v == nil then
+      self.__nils[k] = true
+      return 
+    end
     if missing_prop.set then
       return missing_prop.set(self, k, v)
     end
@@ -227,7 +234,8 @@ return function(name, class_initializer)
   local new
   new = function(...)
     local new_instance = setmetatable({
-      new = new
+      new = new,
+      __nils = { }
     }, __meta)
     new_instance.initialize(new_instance, ...)
     return new_instance

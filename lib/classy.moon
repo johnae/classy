@@ -110,6 +110,7 @@ copy_value = (copies) =>
         return prop.get @, k if prop.get
       -- finally just return the property as is if no getter
       return prop
+    return nil if @__nils[k]
     missing_prop.get @, k if missing_prop.get
 
   __meta.__newindex = (k, v) =>
@@ -121,6 +122,9 @@ copy_value = (copies) =>
       -- simply set the property directly
       __properties[k] = v
       return
+    if v == nil
+      @__nils[k] = true
+      return
     return missing_prop.set @, k, v if missing_prop.set
     rawset @, k, v
 
@@ -128,7 +132,7 @@ copy_value = (copies) =>
 
   new = (...) ->
     -- allows calling new from instance context
-    new_instance = setmetatable :new, __meta
+    new_instance = setmetatable :new, __nils: {}, __meta
     new_instance.initialize new_instance, ...
     new_instance
   new_class.new = new

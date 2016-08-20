@@ -331,6 +331,26 @@ describe "defining a class", ->
       -- now what isn't set in values but on instance
       assert.same {a: 100, b: 200}, new.values
 
+    describe 'nil tracking', ->
+
+      it 'allows values to be set to nil without triggering missing_property', ->
+        c = define 'AClass', ->
+          missing_property
+            get: (k) => "This is not what I want"
+            set: (k, v) => rawset @, k, v
+          instance
+            initialize: =>
+              @nil_value = nil
+              @nil_value2 = nil
+        new = c.new!
+        assert.equal nil, new.nil_value
+        assert.equal nil, new.nil_value2
+        assert.equal "This is not what I want", new.oops
+        new.nil_value = 100
+        assert.equal 100, new.nil_value
+        new.nil_value = nil
+        assert.equal nil, new.nil_value
+
   describe 'util', ->
 
     it 'the class initializer context has access to the class being defined via @', ->
