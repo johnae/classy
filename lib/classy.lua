@@ -143,6 +143,9 @@ return function(name, class_initializer)
   __instance.is_a = is_a
   __instance.__type = name
   __instance.dup = copy_value
+  __instance._nil = function(self, name)
+    self.__nils[name] = nil
+  end
   if parent_class then
     for k, v in pairs(parent_class.is_a) do
       is_a[k] = v

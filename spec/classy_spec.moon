@@ -350,6 +350,8 @@ describe "defining a class", ->
         assert.equal 100, new.nil_value
         new.nil_value = nil
         assert.equal nil, new.nil_value
+        new\_nil'nil_value'
+        assert.equal 'This is not what I want', new.nil_value
 
   describe 'util', ->
 

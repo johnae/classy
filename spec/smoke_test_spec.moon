@@ -87,6 +87,17 @@ Employee = define 'Employee', ->
       super @, firstname, lastname, birthdate
       @salary = opts.salary
 
+DinnerTable = define 'DinnerTable', ->
+  missing_property
+    get: (k) => "There is a #{k} on the table"
+  instance
+    initialize: =>
+      @material = 'Wood'
+      @height = 100
+      @width = 200
+      @depth = 400
+      @tablecloth = nil
+
 describe 'Smoke test', ->
 
   describe 'Date', ->
@@ -213,3 +224,18 @@ describe 'Smoke test', ->
       p = Person.new 'John', 'Eriksson', '1978-01-05'
       e = Employee\from_person p, 1000000
       assert.equal 'John Eriksson', e.name
+
+  describe 'A DinnerTable', ->
+
+    it 'there are many things on the table', ->
+      t = DinnerTable.new!
+      assert.equal 'There is a plate on the table', t.plate
+      assert.equal 'There is a vase on the table', t.vase
+      assert.equal 'There is a candle on the table', t.candle
+      assert.nil t.tablecloth
+      t.tablecloth = 'striped'
+      assert.equal 'striped', t.tablecloth
+      t.tablecloth = nil
+      assert.nil t.tablecloth
+      t\_nil'tablecloth'
+      assert.equal 'There is a tablecloth on the table', t.tablecloth

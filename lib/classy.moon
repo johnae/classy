@@ -79,6 +79,8 @@ copy_value = (copies) =>
   __instance.is_a = is_a
   __instance.__type = name
   __instance.dup = copy_value
+  __instance._nil = (name) =>
+    @__nils[name] = nil
   -- inherit parent if defined
   if parent_class
     for k, v in pairs parent_class.is_a
