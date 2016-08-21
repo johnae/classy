@@ -24,7 +24,7 @@ Because MoonScript's built-in class implementation makes it difficult to use met
 See [spec/classy_spec.moon](spec/classy_spec.moon) and [spec/smoke_test_spec.moon](spec/smoke_test_spec.moon) for more examples.
 
 ```moonscript
-define = require "classy" -- call the local whatever you like, I like 'define'
+define = require'classy'.define -- call the local whatever you like, I like 'define'
 format = string.format
 
 Date = define 'Date', ->

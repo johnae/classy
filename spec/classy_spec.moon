@@ -1,4 +1,4 @@
-define = require "classy"
+define = require'classy'.define
 
 describe "defining a class", ->
 

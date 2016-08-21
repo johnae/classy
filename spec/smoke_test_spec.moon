@@ -1,4 +1,4 @@
-define = require "classy"
+define = require'classy'.define
 format = string.format
 
 Date = define 'Date', ->
