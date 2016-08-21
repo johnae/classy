@@ -1,7 +1,7 @@
 return {
   whitelist_globals = {
     ['.'] = {
-      'instance', 'accessors', 'properties', 'include', 'parent', 'static', 'meta', 'missing_property'
+      'instance', 'accessors', 'properties', 'include', 'parent', 'static', 'meta', 'missing_property', 'super'
     },
     ["spec"] = {
       'it', 'describe', 'before_each', 'before', 'after', 'after_each',

@@ -125,13 +125,25 @@ describe "defining a class", ->
         parent c1
         instance
           c1_method: =>
-            'c1 sub method ' .. @super.c1_method @
+            'c1 sub method ' .. super @
           initialize: (var) =>
-            @super.initialize @, var
+            super @, var
+            @var = @var .. 'blah'
+            @other = @var\upper!
+      c3 = define 'AClass3', ->
+        parent c2
+        instance
+          initialize: (var) =>
+            super @, var
 
       new2 = c2.new 'c2'
-      assert.equal 'c2', new2.var
-      assert.equal 'c1 sub method c1 method, var: c2', new2\c1_method!
+      new3 = c3.new 'c3'
+      assert.equal 'c2blah', new2.var
+      assert.equal 'C2BLAH', new2.other
+      assert.equal 'c1 sub method c1 method, var: c2blah', new2\c1_method!
+      assert.equal 'c3blah', new3.var
+      assert.equal 'C3BLAH', new3.other
+      assert.equal 'c1 sub method c1 method, var: c3blah', new3\c1_method!
 
     it 'a class can include methods from a given table', ->
       meth_table = {

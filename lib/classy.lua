@@ -36,6 +36,7 @@ return function(name, class_initializer)
   local is_a = { }
   local __meta = { }
   local new_class = {
+    __type = name,
     __properties = __properties,
     is_a = is_a,
     __instance = __instance,
@@ -139,10 +140,10 @@ return function(name, class_initializer)
   setfenv(class_initializer, class_initializer_env)
   class_initializer(new_class)
   is_a[new_class] = true
-  new_class.__type = name
+  __instance.is_a = is_a
+  __instance.__type = name
   __instance.dup = copy_value
   if parent_class then
-    __instance.super = parent_class.__instance
     for k, v in pairs(parent_class.is_a) do
       is_a[k] = v
     end
@@ -157,6 +158,21 @@ return function(name, class_initializer)
       end
     end
     for name, def in pairs(parent_class.__instance) do
+      do
+        local new_def = __instance[name]
+        if new_def then
+          if type(new_def) == 'function' then
+            local env = setmetatable({
+              super = def
+            }, {
+              __index = _G
+            })
+            setfenv(new_def, env)
+          end
+        else
+          __instance[name] = def
+        end
+      end
       if not (__instance[name]) then
         __instance[name] = def
       end
@@ -168,12 +184,6 @@ return function(name, class_initializer)
     end
   end
   __meta.__index = function(self, k)
-    if k == 'is_a' then
-      return is_a
-    end
-    if k == '__type' then
-      return name
-    end
     do
       local v = rawget(__instance, k)
       if v then

@@ -20,7 +20,7 @@ copy_value = (copies) =>
   __properties = {}
   is_a = {}
   __meta = {}
-  new_class = :__properties, :is_a, :__instance, :__meta
+  new_class = __type: name, :__properties, :is_a, :__instance, :__meta
 
   static = (opts) ->
     for name, def in pairs opts
@@ -76,11 +76,11 @@ copy_value = (copies) =>
   class_initializer new_class
 
   is_a[new_class] = true
-  new_class.__type = name
+  __instance.is_a = is_a
+  __instance.__type = name
   __instance.dup = copy_value
   -- inherit parent if defined
   if parent_class
-    __instance.super = parent_class.__instance
     for k, v in pairs parent_class.is_a
       is_a[k] = v
     for name, def in pairs parent_class
@@ -88,16 +88,19 @@ copy_value = (copies) =>
     for name, def in pairs parent_class.__properties
       __properties[name] = def unless __properties[name]
     for name, def in pairs parent_class.__instance
+      if new_def = __instance[name]
+        -- this enables calling "super" in a function to
+        -- run the same name function from parent
+        if type(new_def) == 'function'
+          env = setmetatable {super: def}, __index: _G
+          setfenv new_def, env
+      else
+        __instance[name] = def
       __instance[name] = def unless __instance[name]
     for name, def in pairs parent_class.__meta
       __meta[name] = def unless __meta[name]
 
   __meta.__index = (k) =>
-    -- delegate missing keys in instance
-    if k == 'is_a'
-      return is_a
-    if k == '__type'
-      return name
     if v = rawget __instance, k
       return v
     -- next try properties

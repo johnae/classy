@@ -107,7 +107,7 @@ Employee = define 'Employee', ->
   instance
     initialize: (opts={}) =>
       {:firstname, :lastname, :birthdate} = opts
-      @super.initialize @, firstname, lastname, birthdate
+      super @, firstname, lastname, birthdate
       @salary = opts.salary
 
 d = Date.new 1978, 1, 5
