@@ -52,7 +52,7 @@ describe "defining a class", ->
           initialize: (var) =>
             @var = var
           copy: =>
-            @.new @var
+            new @var
       new = c.new 'abcde'
       assert.equal 'abcde', new.var
       new2 = new\copy!
@@ -65,7 +65,7 @@ describe "defining a class", ->
       c = define 'AClass', ->
         static
           copy: =>
-            @.new 10
+            new 10
         instance
           initialize: (var) =>
             @var = var

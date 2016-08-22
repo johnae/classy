@@ -20,7 +20,7 @@ Date = define 'Date', ->
     from_string: (str) =>
       y, m, d = str\match('(%d+)-(%d+)-(%d+)')
       y, m, d = tonumber(y), tonumber(m), tonumber(d)
-      @.new y, m, d
+      new y, m, d
   instance
     initialize: (year, month, day) =>
       @year, @month, @day = tonumber(year), tonumber(month), tonumber(day)
@@ -33,13 +33,13 @@ Date = define 'Date', ->
       s = num_days*24*60*60
       d = os.time year: @year, month: @month, day: @day
       newdate = os.date '*t', d+s
-      @.new newdate.year, newdate.month, newdate.day
+      new newdate.year, newdate.month, newdate.day
 
     __sub: (num_days) =>
       s = num_days*24*60*60
       d = os.time year: @year, month: @month, day: @day
       newdate = os.date '*t', d-s
-      @.new newdate.year, newdate.month, newdate.day
+      new newdate.year, newdate.month, newdate.day
 
 Person = define 'Person', ->
   accessors
@@ -56,9 +56,9 @@ Person = define 'Person', ->
     find: (name) =>
       name = name\lower!
       @some_people or= {
-        @.new('Bob', 'Johnsson', '1964-03-02'),
-        @.new('Mary', 'Jensen', '1983-05-10'),
-        @.new('Victoria', 'Hammadi', '1989-12-15')
+        new('Bob', 'Johnsson', '1964-03-02'),
+        new('Mary', 'Jensen', '1983-05-10'),
+        new('Victoria', 'Hammadi', '1989-12-15')
       }
       found = {}
       for p in *@some_people
@@ -80,7 +80,7 @@ Employee = define 'Employee', ->
     from_person: (p, salary) =>
       {:firstname, :lastname, :birthdate} = p.attributes
       birthdate = tostring(birthdate)
-      @.new :firstname, :lastname, :birthdate, :salary
+      new :firstname, :lastname, :birthdate, :salary
   instance
     initialize: (opts={}) =>
       {:firstname, :lastname, :birthdate} = opts
