@@ -44,6 +44,7 @@ Date = define 'Date', ->
       set: (age) =>
         today = os.date('*t')
         @year = today.year - age
+
   static
 
     from_string: (str) =>
