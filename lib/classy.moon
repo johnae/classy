@@ -1,4 +1,4 @@
-merge = (t1, t2) ->
+merge = table.merge or (t1, t2) ->
   res = {k, v for k, v in pairs t1}
   for k, v in pairs t2
     res[k] = v

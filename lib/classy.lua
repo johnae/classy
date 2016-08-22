@@ -1,5 +1,4 @@
-local merge
-merge = function(t1, t2)
+local merge = table.merge or function(t1, t2)
   local res
   do
     local _tbl_0 = { }
