@@ -28,7 +28,9 @@ define = require'classy'.define -- call the local whatever you like, I like 'def
 format = string.format
 
 Date = define 'Date', ->
+
   properties
+
     age:
       get: =>
         now = os.date('*t')
@@ -43,14 +45,19 @@ Date = define 'Date', ->
         today = os.date('*t')
         @year = today.year - age
   static
+
     from_string: (str) =>
       y, m, d = str\match('(%d+)-(%d+)-(%d+)')
       y, m, d = tonumber(y), tonumber(m), tonumber(d)
       new y, m, d
+
   instance
+
     initialize: (year, month, day) =>
       @year, @month, @day = tonumber(year), tonumber(month), tonumber(day)
+
   meta
+
     __tostring: =>
       y, m, d = @year, format('%02d', @month), format('%02d', @day)
       "#{y}-#{m}-#{d}"
@@ -68,9 +75,13 @@ Date = define 'Date', ->
       new newdate.year, newdate.month, newdate.day
 
 Person = define 'Person', ->
+
   accessors
+
     attributes: {'firstname', 'lastname'}
+
   properties
+
     name: => "#{@firstname} #{@lastname}"
     birthdate:
       get: => tostring(@attributes.birthdate)
@@ -78,7 +89,9 @@ Person = define 'Person', ->
     age:
       get: => @attributes.birthdate.age
       set: (age) => @attributes.birthdate.age = age
+
   static
+
     find: (name) =>
       name = name\lower!
       @some_people or= {
@@ -86,25 +99,26 @@ Person = define 'Person', ->
         new('Mary', 'Jensen', '1983-05-10'),
         new('Victoria', 'Hammadi', '1989-12-15')
       }
-      found = {}
-      for p in *@some_people
-        pname = p.name\lower!
-        if pname\match name
-          found[#found + 1] = p
-      found
+      [p for p in *@some_people when p.name\lower!\match name]
+
   instance
+
     initialize: (firstname, lastname, birthdate) =>
       @attributes = {:firstname, :lastname, birthdate: Date\from_string(birthdate)}
 
 -- subclass of Person
 Employee = define 'Employee', ->
   parent Person
+
   static
+
     from_person: (p, salary) =>
       {:firstname, :lastname, :birthdate} = p.attributes
       birthdate = tostring(birthdate)
       new :firstname, :lastname, :birthdate, :salary
+
   instance
+
     initialize: (opts={}) =>
       {:firstname, :lastname, :birthdate} = opts
       super @, firstname, lastname, birthdate
