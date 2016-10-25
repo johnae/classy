@@ -56,26 +56,26 @@ return {
     })
     local static
     static = function(opts)
-      for name, def in pairs(opts) do
+      for field_name, def in pairs(opts) do
         if type(def) == 'function' then
           setfenv(def, default_function_env)
         end
-        new_class[name] = def
+        new_class[field_name] = def
       end
     end
     local instance
     instance = function(opts)
-      for name, def in pairs(opts) do
+      for field_name, def in pairs(opts) do
         if type(def) == 'function' then
           setfenv(def, default_function_env)
         end
-        __instance[name] = def
+        __instance[field_name] = def
       end
     end
     local include = instance
     local parent
-    parent = function(parent)
-      parent_class = parent
+    parent = function(p)
+      parent_class = p
     end
     local missing_prop = {
       get = function(self, k)
@@ -133,11 +133,11 @@ return {
       if opts == nil then
         opts = { }
       end
-      for name, def in pairs(opts) do
+      for field_name, def in pairs(opts) do
         if type(def) == 'function' then
           setfenv(def, default_function_env)
         end
-        __meta[name] = def
+        __meta[field_name] = def
       end
     end
     local class_initializer_env = setmetatable({
@@ -163,19 +163,19 @@ return {
       for k, v in pairs(parent_class.is_a) do
         is_a[k] = v
       end
-      for name, def in pairs(parent_class) do
-        if not (new_class[name]) then
-          new_class[name] = def
+      for field_name, def in pairs(parent_class) do
+        if not (new_class[field_name]) then
+          new_class[field_name] = def
         end
       end
-      for name, def in pairs(parent_class.__properties) do
-        if not (__properties[name]) then
-          __properties[name] = def
+      for field_name, def in pairs(parent_class.__properties) do
+        if not (__properties[field_name]) then
+          __properties[field_name] = def
         end
       end
-      for name, def in pairs(parent_class.__instance) do
+      for field_name, def in pairs(parent_class.__instance) do
         do
-          local new_def = __instance[name]
+          local new_def = __instance[field_name]
           if new_def then
             if type(new_def) == 'function' then
               local env = copy_value(default_function_env)
@@ -183,16 +183,16 @@ return {
               setfenv(new_def, env)
             end
           else
-            __instance[name] = def
+            __instance[field_name] = def
           end
         end
-        if not (__instance[name]) then
-          __instance[name] = def
+        if not (__instance[field_name]) then
+          __instance[field_name] = def
         end
       end
-      for name, def in pairs(parent_class.__meta) do
-        if not (__meta[name]) then
-          __meta[name] = def
+      for field_name, def in pairs(parent_class.__meta) do
+        if not (__meta[field_name]) then
+          __meta[field_name] = def
         end
       end
     end
